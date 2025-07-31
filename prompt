@@ -1,0 +1,51 @@
+接下來怎麼做
+準備模型
+
+把你的 model.vrm 放到 public/ 資料夾中。
+
+啟動前端
+
+bash
+複製
+編輯
+npm install
+npm run dev   # 若用 Vite 或 create-react-app
+啟動後端
+
+bash
+複製
+編輯
+cd server
+npm install
+export OPENAI_API_KEY=你的金鑰
+node server.js
+🛠 建議安裝套件（前端）
+bash
+複製
+編輯
+npm install three @pixiv/three-vrm three/examples/jsm
+
+
+你現在已具備完整的 Web App 架構，具備以下功能：
+
+✅ 顯示 VRoid 模型（three-vrm）
+
+✅ 使用者與角色對話（前端輸入 + 後端 ChatGPT）
+
+✅ 自動語音回覆（TTS）
+
+✅ 乾淨分離的模組（App、Viewer、ChatBox、API、TTS）
+
+✅ 下一步你可以選擇：
+
+加入語音輸入（語音轉文字）
+
+角色嘴型同步 / 表情表達
+
+部署到線上（如 Vercel、Netlify）
+
+支援多角色 / 多模型切換
+
+有需要我可以幫你實作其中一項或多項。你想先加哪個功能？
+
+npm create vite@latest my-vroid-webbot -- --template react
