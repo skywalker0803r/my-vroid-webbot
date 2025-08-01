@@ -41,6 +41,8 @@ const VRMViewer = ({ modelUrl, latestReply }) => {
           console.error("Loaded model is not a VRM");
           return;
         }
+        console.log("VRM model loaded successfully.");
+        
         if (currentVrm.current) {
           scene.current.remove(currentVrm.current.scene);
           if (typeof currentVrm.current.dispose === 'function') {
@@ -89,11 +91,20 @@ const VRMViewer = ({ modelUrl, latestReply }) => {
           blinkTime = Math.random() * 5 + 2;
         }
 
-        // 根據 latestReply 調整手臂動作
         const leftUpperArm = currentVrm.current.humanoid.getRawBoneNode('leftUpperArm');
         const rightUpperArm = currentVrm.current.humanoid.getRawBoneNode('rightUpperArm');
 
-        if (latestReply.includes('嗨') || latestReply.includes('哈囉')) {
+        // 新增的日誌
+        console.log("Current latestReply:", latestReply);
+        if (leftUpperArm) {
+          console.log("Left arm rotation before gesture check:", leftUpperArm.rotation);
+        } else {
+          console.warn("Left arm bone not found.");
+        }
+
+        // 檢查是否有特定回覆，來觸發誇張姿勢
+        const greetingKeywords = ['嗨', '哈囉', '您好', '你好'];
+        if (greetingKeywords.some(keyword => latestReply.includes(keyword))) {
           console.log("Triggering 'Hello' gesture.");
           // 誇張的揮手動作
           if (leftUpperArm) {
@@ -116,17 +127,24 @@ const VRMViewer = ({ modelUrl, latestReply }) => {
             rightUpperArm.rotation.z = -Math.PI * 0.2;
           }
         } else {
-          // 沒有對話時，手自然放下來
+          // 沒有特定回覆時，執行閒置動作
+          console.log("Triggering 'Idle' gesture.");
           if (leftUpperArm) {
-            leftUpperArm.rotation.x = 0;
-            leftUpperArm.rotation.y = 0;
-            leftUpperArm.rotation.z = 0;
+            leftUpperArm.rotation.x = Math.sin(elapsedTime * 1) * 0.05 - 0.1;
+            leftUpperArm.rotation.y = Math.sin(elapsedTime * 0.8) * 0.05;
+            leftUpperArm.rotation.z = Math.cos(elapsedTime * 1.2) * 0.05;
           }
           if (rightUpperArm) {
-            rightUpperArm.rotation.x = 0;
-            rightUpperArm.rotation.y = 0;
-            rightUpperArm.rotation.z = 0;
+            rightUpperArm.rotation.x = Math.sin(elapsedTime * 1) * 0.05 - 0.1;
+            rightUpperArm.rotation.y = Math.sin(elapsedTime * 0.8) * 0.05;
+            rightUpperArm.rotation.z = Math.cos(elapsedTime * 1.2) * -0.05;
           }
+        }
+        
+        if (leftUpperArm) {
+          console.log("Left arm rotation after gesture check:", leftUpperArm.rotation);
+        } else {
+          console.warn("Left arm bone not found.");
         }
 
         currentVrm.current.update(delta);

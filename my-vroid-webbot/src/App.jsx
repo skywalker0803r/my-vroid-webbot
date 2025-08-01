@@ -16,14 +16,13 @@ export default function App() {
     setLatestReply(reply); // 在收到回覆時更新狀態
     speakText(reply);
     
-    // 清除 latestReply 狀態，以便下次重新觸發動作
+    // 設定定時器，4秒後將 latestReply 清空，讓模型恢復為閒置狀態
     setTimeout(() => {
         setLatestReply("");
     }, 4000);
   };
 
   return (
-    // 新的佈局，使用 Flexbox 讓整個 App 置中
     <div className="flex items-center justify-center min-h-screen p-4">
       <div className="flex w-full max-w-4xl h-[80vh] border rounded-lg overflow-hidden shadow-lg">
         <div className="w-2/3 bg-black">
